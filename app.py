@@ -20,16 +20,12 @@ TEST_DB_PASS = os.getenv("TEST_DB_PASSWORD")
 if not DB_URL or not DB_USER or not DB_PASS:
     raise RuntimeError("Missing DB credentials. Check your .env file.")
 
-# Initialize Flask app
-app = Flask(__name__)
+# Initialize Flask app, and forbid static files
+app = Flask(__name__, static_folder=None)
 
 # Set up database URI
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URL  # Use main database
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Set upload folder for storing images
-app.config["UPLOAD_FOLDER"] = "./static/uploaded_images"
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # Initialize Flask-Restful API and SQLAlchemy database
 api = Api(app)
@@ -105,9 +101,14 @@ def get_image(upload_id):
 # Route for rendering the uploaded content
 @app.route("/")
 def index():
-    uploads = Upload.query.all()
+    # uploads = Upload.query.all()
+    # processed_data = [
+    #     {"text": upload.text.upper(), "image_url": f"/api/image/{upload.id}"}
+    #     for upload in uploads
+    # ]
+    uploads = Upload.query.with_entities(Upload.id, Upload.text).all()
     processed_data = [
-        {"text": upload.text.upper(), "image_url": f"/api/image/{upload.id}"}
+        {"text": upload[1].upper(), "image_url": f"/api/image/{upload[0]}"}
         for upload in uploads
     ]
     return render_template("index.html", uploads=processed_data)
@@ -116,4 +117,5 @@ def index():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+
+    app.run(host="0.0.0.0", port=5000, debug=True)
