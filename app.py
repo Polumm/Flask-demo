@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Database credentials from .env file
-DB_URL = os.getenv("DB_URL")  # Main DB URL
+DB_URL = os.getenv("DB_URL")
 DB_USER = os.getenv("DB_USERNAME")
 DB_PASS = os.getenv("DB_PASSWORD")
 
