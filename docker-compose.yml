@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - DB_URL=${DB_URL}docker-compose up --build
+
+    volumes:
+      - .:/app
