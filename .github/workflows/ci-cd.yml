@@ -1,5 +1,8 @@
 name: CI/CD for Flask Demo
 
+env:
+  DB_URL: ${{ secrets.DB_URL }}
+
 on:
   push:
     branches:
