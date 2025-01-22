@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, redirect, url_for
 from .models import Upload, db
 
 
@@ -16,7 +16,9 @@ class UploadAPI(Resource):
         db.session.add(upload_entry)
         db.session.commit()
 
-        return {"message": "Upload successful", "id": upload_entry.id}, 201
+        # return {"message": "Upload successful", "id": upload_entry.id}, 201
+        # Redirect to home after successful upload
+        return redirect(url_for("routes.index"))
 
     def get(self):
         uploads = Upload.query.with_entities(Upload.id, Upload.text).all()

@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload Text and Image</title>
+    <title>Upload and View Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .upload-form {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .gallery-item {
+            width: calc(33.333% - 20px);
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Uploaded Content</h1>
-    {% for upload in uploads %}
-        <div>
-            <h2>Text: {{ upload.text }}</h2>
-            <img src="{{ upload.image_url }}" alt="Uploaded Image" width="300">
+    <div class="container">
+        <h1>Uploaded Content</h1>
+        <div class="gallery">
+            {% for upload in uploads %}
+            <div class="gallery-item">
+                <img src="{{ upload.image_url }}" alt="Uploaded Image">
+                <p>{{ upload.text }}</p>
+            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
 
-    <h1>Upload New Content</h1>
-    <form action="/api/upload" method="post" enctype="multipart/form-data">
-        <label for="text">Text:</label>
-        <input type="text" id="text" name="text" required><br><br>
-        <label for="image">Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required><br><br>
-        <button type="submit">Upload</button>
-    </form>
+        <div class="upload-form">
+            <h2>Upload New Content</h2>
+            <form action="/api/upload" method="post" enctype="multipart/form-data">
+                <label for="text">Text:</label>
+                <input type="text" id="text" name="text" required><br><br>
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required><br><br>
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
