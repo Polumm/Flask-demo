@@ -32,8 +32,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run tests (if you have any tests)
+      # Step 4: Run tests
       - name: Run tests
+        env:
+            DB_URL: ${{ secrets.DB_URL }}
         run: |
           pytest  # Ensure pytest is listed in requirements.txt
 
